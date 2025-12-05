@@ -570,13 +570,13 @@ sliding_window_summary <- function(frame_metrics,
     rec <- tibble(
       WindowStart = s,
       WindowEnd = e,
+      N_med = median(sub$N, na.rm = TRUE),
       N_mean = mean(sub$N, na.rm = TRUE),
+      N_sd = sd(sub$N, na.rm = TRUE),
       
       MPD_med = median(sub$MPD, na.rm = TRUE),
       MPD_mean = mean(sub$MPD, na.rm = TRUE),
       MPD_sd = sd(sub$MPD, na.rm = TRUE),
-#      MPD_min = min(sub$MPD, na.rm = TRUE),
-#      MPD_max = max(sub$MPD, na.rm = TRUE),
       
       MNN_med = median(sub$MNN, na.rm = TRUE),
       MNN_mean = mean(sub$MNN, na.rm = TRUE),
@@ -705,6 +705,7 @@ plot_pair_overlap_heatmap <- function(df_interp, id_col = "ObjectID", frame_col 
 # - interp_gap: pass to interpolate_tracks(); should gaps in detection be interpolated, and by how many frame?
 # - Nmin: minimum number of detections in the frame to compute the metrics; default is 2 individuals, it will be NA for a single detection
 # - angle_col, breath_col: column names if present
+# frame_selection: input: a vector with 2 values, min and max frame number. E.g. c(0, 100) to analyse only the first 100 frames of the video (ie, only the 100 rows of the csv file)
 # return_plots: FALSE/TRUE
 
 compute_group_metrics <- function(csv_path,
