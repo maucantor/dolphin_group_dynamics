@@ -496,13 +496,13 @@ sliding_window_summary <- function(frame_metrics,
     return(tibble(
       WindowStart = min(sub$FrameIndex),
       WindowEnd   = max(sub$FrameIndex),
+      N_med = median(sub$N, na.rm = TRUE),
       N_mean = mean(sub$N, na.rm = TRUE),
+      N_sd = sd(sub$N, na.rm = TRUE),
       
       MPD_med = median(sub$MPD, na.rm = TRUE),
       MPD_mean = mean(sub$MPD, na.rm = TRUE),
       MPD_sd = sd(sub$MPD, na.rm = TRUE),
-#      MPD_min = min(sub$MPD, na.rm = TRUE),
-#      MPD_max = max(sub$MPD, na.rm = TRUE),
       
       MNN_med = median(sub$MNN, na.rm = TRUE),
       MNN_mean = mean(sub$MNN, na.rm = TRUE),
