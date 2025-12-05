@@ -855,26 +855,27 @@ file_list <- list.files(path = folder_path,
                         pattern = "\\.csv$",
                         full.names = TRUE)
 
-# Read CSV files into a list of data frames
-data_list <- lapply(file_list, read.csv)
-
 # Loop metric function across files, saving only the dataframes with the aggregated metrics per entire videos
-
-result_list = list()
-
-for(i in length(data_list)){
-  result_list[[i]] = compute_group_metrics(csv_path = data_list[[i]],
-                                           whole_video = TRUE,
-                                           fps = 30, 
-                                           sliding = FALSE, 
-                                           window_sec = NA,  
-                                           slide_step_frames = NULL,
-                                           interp_gap = 0, 
-                                           Nmin = 1,
-                                           angle_col = "MovingAvgAngle_deg",
-                                           breath_col = NULL, 
-                                           return_plots = FALSE)
+for(i in 1:length(file_list)){
+  aux1 = compute_group_metrics(csv_path = file_list[[i]],
+                               whole_video = TRUE,
+                               fps = 30, 
+                               sliding = TRUE, 
+                               window_sec = NA,  
+                               slide_step_frames = NULL,
+                               interp_gap = 0, 
+                               Nmin = 1,
+                               angle_col = "MovingAvgAngle_deg",
+                               breath_col = NULL, 
+                               return_plots = FALSE)
+  # add video name and save
+  aux2 = cbind(Video = gsub("_output.csv", "", names(data_list)[i]),
+               aux1$window_metrics)
+  result_list[[i]] = aux2
 }
+
+# Combine all into a dataframe
+result_full_videos = as.data.frame(dplyr::bind_rows(result_list))
 
 
 
